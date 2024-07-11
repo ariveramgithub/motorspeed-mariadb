@@ -34,11 +34,9 @@ pipeline {
           image 'bitnami/mariadb:latest'
         }
       }
-      // steps {
-      //   script {
-      //     
-      //   }
-      // }
+      steps {
+        sh 'mariadb --version'
+      }
     }
   }
 }
