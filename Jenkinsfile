@@ -35,26 +35,26 @@ pipeline {
         }
       }
     }
-    // stage('Remove container...') {
-    //   agent any
-    //   steps {
-    //     script {
-    //       try {
-    //         sh "docker rm -f ${container_name}"
-    //         echo "Remove container ${container_name} done!"
-    //       } catch(e) {
-    //         echo "Container name ${container_name} not found"
-    //       }
-    //     }
-    //   }
-    // }
+    stage('Remove container...') {
+      agent any
+      steps {
+        script {
+          try {
+            sh "docker rm -f ${container_name}"
+            echo "Remove container ${container_name} done!"
+          } catch(e) {
+            echo "Container name ${container_name} not found"
+          }
+        }
+      }
+    }
     stage('Docker Run') {
       agent any
       steps {
         script {
           try {
             sh "docker run -d --name ${container_name} \
-            --env MARIADB_USER=${madiarb_user} \
+            --env MARIADB_USER=${mariadb_user} \
             --env MARIADB_ROOT_PASSWORD=${mariadb_root_password} \
             --env MARIADB_PASSWORD=${mariadb_password} \
             --env MARIADB_DATABASE=${mariadb_database} \
