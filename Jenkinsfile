@@ -5,6 +5,7 @@ def mariadb_root_password = "1dca#SD5.D1ad5"
 def mariadb_user = "motorspeed_dba"
 def mariadb_password = "1234"
 def mariadb_database = "motorspeed_site"
+def mariadb_port = "9036"
 
 pipeline { 
   agent none
@@ -60,7 +61,7 @@ pipeline {
             --env MARIADB_DATABASE=${mariadb_database} \
             --network ${network_name} \
             --volume ${volume_name}:/bitnami/mariadb \
-            -p 9036:3306 \
+            -p ${mariadb_port}:3306 \
             --restart unless-stopped \
             bitnami/mariadb:latest"
 
