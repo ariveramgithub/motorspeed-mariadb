@@ -1,8 +1,6 @@
 pipeline {
   agent none
-
   stages {
-    /*
     stage("Network create...") {
       agent any
       steps {
@@ -29,7 +27,6 @@ pipeline {
         }
       }
     }
-    */
     stage('Docker Run') {
       agent {
         docker {
