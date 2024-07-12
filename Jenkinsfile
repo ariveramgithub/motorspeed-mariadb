@@ -35,6 +35,20 @@ pipeline {
         }
       }
     }
+    stage('Remove container...') {
+        agent any
+        steps {
+            script {
+                try {
+                    sh "docker stop ${container_name}"
+                    sh "docker rm -f ${container_name}"
+                    echo "Remove container ${container_name} done!"
+                }catch( e ){
+                    echo "Container name ${container_name} not found"
+                }
+            }
+        }
+    }
     stage('Docker Run') {
       agent any
       steps {
