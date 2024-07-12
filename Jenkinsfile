@@ -1,4 +1,9 @@
 pipeline {
+  def network_name = "motorspeed-prod-network"
+  def volume_name = "motorspeed_mariadb_prod_data"
+  def container_name = "motorspeed-mariadb-prod"
+
+  
   agent none
   stages {
     stage("Network create...") {
@@ -6,10 +11,10 @@ pipeline {
       steps {
         script {
           try {
-            sh "docker network create motorspeed-prod-network"
-            echo "Network motorspeed-prod-network done!"
+            sh "docker network create ${network_name}"
+            echo "Network ${network_name} done!"
           } catch(e){
-            echo "Network motorspeed-prod-network already exists"
+            echo "Network ${network_name} already exists"
           }
         }
       }
@@ -19,22 +24,35 @@ pipeline {
       steps {
         script {
           try {
-            sh "docker volume create --name motorspeed_mariadb_prod_data"
-            echo "Volume motorspeed_mariadb_prod_data done!"
+            sh "docker volume create --name ${volume_name}"
+            echo "Volume ${volume_name} done!"
           } catch(e){
-            echo "Volume motorspeed_mariadb_prod_data already exists"
+            echo "Volume ${volume_name} already exists"
           }
         }
       }
     }
     stage('Docker Run') {
-      agent {
-        docker {
-          image 'bitnami/mariadb:latest'
-        }
-      }
+      agent any
       steps {
-        sh 'mariadb --version'
+        script {
+          try {
+            sh "docker run -d --name ${container_name} \
+            --env MARIADB_USER=motorspeed_dba \
+            --env MARIADB_ROOT_PASSWORD=1dca#SD5.D1ad5 \
+            --env MARIADB_PASSWORD=1234 \
+            --env MARIADB_DATABASE=motorspeed_site \
+            --network motorspeed-network \
+            --volume motorspeed_mariadb_data:/bitnami/mariadb \
+            -p 9036:3306 \
+            --restart unless-stopped \
+            bitnami/mariadb:latest"
+
+            echo "Container ${container_name} done!"
+          } catch(e){
+            echo "Container ${container_name} already exists"
+          }
+        }
       }
     }
   }
