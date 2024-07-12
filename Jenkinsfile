@@ -1,6 +1,10 @@
 def network_name = "motorspeed-prod-network"
 def volume_name = "motorspeed_mariadb_prod_data"
 def container_name = "motorspeed-mariadb-prod"
+def mariadb_root_password = "1dca#SD5.D1ad5"
+def mariadb_user = "motorspeed_dba"
+def mariadb_password = "1234"
+def mariadb_database = "motorspeed_site"
 
 pipeline { 
   agent none
@@ -37,12 +41,12 @@ pipeline {
         script {
           try {
             sh "docker run -d --name ${container_name} \
-            --env MARIADB_USER=motorspeed_dba \
-            --env MARIADB_ROOT_PASSWORD=1dca#SD5.D1ad5 \
-            --env MARIADB_PASSWORD=1234 \
-            --env MARIADB_DATABASE=motorspeed_site \
-            --network motorspeed-network \
-            --volume motorspeed_mariadb_data:/bitnami/mariadb \
+            --env MARIADB_USER=${madiarb_user} \
+            --env MARIADB_ROOT_PASSWORD=${mariadb_root_password} \
+            --env MARIADB_PASSWORD=${mariadb_password} \
+            --env MARIADB_DATABASE=${mariadb_database} \
+            --network ${network_name} \
+            --volume ${volume_name}:/bitnami/mariadb \
             -p 9036:3306 \
             --restart unless-stopped \
             bitnami/mariadb:latest"
