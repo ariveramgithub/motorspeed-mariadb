@@ -9,19 +9,6 @@ def mariadb_database = "motorspeed_site"
 pipeline { 
   agent none
   stages {
-    stage('Remove container...') {
-      agent any
-      steps {
-        script {
-          try {
-            sh "docker rm -f ${container_name}"
-            echo "Remove container ${container_name} done!"
-          } catch(e) {
-            echo "Container name ${container_name} not found"
-          }
-        }
-      }
-    }
     stage("Network create...") {
       agent any
       steps {
@@ -48,7 +35,19 @@ pipeline {
         }
       }
     }
-
+    // stage('Remove container...') {
+    //   agent any
+    //   steps {
+    //     script {
+    //       try {
+    //         sh "docker rm -f ${container_name}"
+    //         echo "Remove container ${container_name} done!"
+    //       } catch(e) {
+    //         echo "Container name ${container_name} not found"
+    //       }
+    //     }
+    //   }
+    // }
     stage('Docker Run') {
       agent any
       steps {
