@@ -1,9 +1,8 @@
-pipeline {
-  def network_name = "motorspeed-prod-network"
-  def volume_name = "motorspeed_mariadb_prod_data"
-  def container_name = "motorspeed-mariadb-prod"
+def network_name = "motorspeed-prod-network"
+def volume_name = "motorspeed_mariadb_prod_data"
+def container_name = "motorspeed-mariadb-prod"
 
-  
+pipeline { 
   agent none
   stages {
     stage("Network create...") {
